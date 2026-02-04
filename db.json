@@ -1,0 +1,56 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "Admin",
+      "email": "admin@demo.com",
+      "password": "123456",
+      "role": "admin"
+    },
+    {
+      "id": "2",
+      "name": "User",
+      "email": "user@demo.com",
+      "password": "123456",
+      "role": "user"
+    }
+  ],
+  "offers": [
+    {
+      "id": "f813",
+      "title": "swwswwsw11111111",
+      "company": "wswswsws",
+      "location": "wswsws",
+      "category": "wswsws",
+      "type": "wswsws",
+      "salary": "wswswsws",
+      "description": "wswswswsws"
+    }
+  ],
+  "applications": [
+    {
+      "id": "e448",
+      "userId": "2",
+      "offerId": 1,
+      "date": "4/2/2026"
+    },
+    {
+      "id": "e62c",
+      "userId": "2",
+      "offerId": 4,
+      "date": "4/2/2026"
+    },
+    {
+      "id": "9e35",
+      "userId": "1",
+      "offerId": null,
+      "date": "4/2/2026"
+    },
+    {
+      "id": "ffe6",
+      "userId": "2",
+      "offerId": "f813",
+      "date": "4/2/2026"
+    }
+  ]
+}
