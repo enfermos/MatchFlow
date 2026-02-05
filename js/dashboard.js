@@ -40,11 +40,13 @@ if (session.role === "admin") {
     <a href="#" data-section="section-admin-offers">Ofertas</a>
     <a href="#" data-section="section-admin-form">Crear oferta</a>
     <a href="#" data-section="section-admin-applications">Postulaciones</a>
+    <a href="profile_user.html">Mi Perfil</a>
   `;
 } else {
   navLinks.innerHTML = `
     <a href="#" data-section="section-all-offers">Todas las ofertas</a>
     <a href="#" data-section="section-applied">Mis postulaciones</a>
+    <a href="profile_user.html">Mi Perfil</a>
   `;
 }
 
