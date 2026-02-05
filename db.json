@@ -13,6 +13,20 @@
       "email": "user@demo.com",
       "password": "123456",
       "role": "user"
+    },
+    {
+      "id": "a2ff",
+      "fullName": "este parcero",
+      "email": "parcerito@gmail.com",
+      "password": "123456",
+      "role": "user"
+    },
+    {
+      "id": "b7e1",
+      "name": "pepe",
+      "email": "pepito@hotmail.com",
+      "password": "123",
+      "role": "user"
     }
   ],
   "offers": [
@@ -25,6 +39,16 @@
       "type": "wswsws",
       "salary": "wswswsws",
       "description": "wswswswsws"
+    },
+    {
+      "id": "7201",
+      "title": "dev",
+      "company": "exito",
+      "location": "alli",
+      "category": "meow",
+      "type": "virtal",
+      "salary": "1000000awfaw",
+      "description": "afawwfaw"
     }
   ],
   "applications": [
@@ -51,6 +75,18 @@
       "userId": "2",
       "offerId": "f813",
       "date": "4/2/2026"
+    },
+    {
+      "id": "e3a3",
+      "userId": "b7e1",
+      "offerId": "f813",
+      "date": "2/4/2026"
+    },
+    {
+      "id": "b1a2",
+      "userId": "b7e1",
+      "offerId": "7201",
+      "date": "2/4/2026"
     }
   ]
 }
