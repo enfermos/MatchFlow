@@ -1,4 +1,11 @@
-import { getData, postData, setSession, getSession, clearSession } from "./api.js";
+import {
+  getData,
+  postData,
+  setSession,
+  getSession,
+  clearSession,
+} from "./api.js";
+import { protect } from "./routeProtection.js";
 
 const loginForm = document.querySelector("#login-form");
 const registerForm = document.querySelector("#register-form");
@@ -7,12 +14,14 @@ const showAlert = (el, msg, type = "error") => {
   el.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
 };
 
-/* REDIRECCIÓN SI YA LOGUEADO */
-if (getSession() && location.pathname.includes("index")) {
-  location.href = "./dashboard.html";
+if (location.pathname.includes("index.html") || location.pathname === "/") {
+  protect("LOGIN");
 }
 
-/* LOGIN */
+if (location.pathname.includes("register.html")) {
+  protect("REGISTER");
+}
+
 if (loginForm) {
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -43,7 +52,6 @@ if (loginForm) {
   });
 }
 
-/* REGISTRO */
 if (registerForm) {
   registerForm.addEventListener("submit", async (e) => {
     e.preventDefault();

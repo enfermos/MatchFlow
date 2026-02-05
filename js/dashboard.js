@@ -1,12 +1,17 @@
-import { getData, postData, putData, deleteData, getSession, clearSession } from "./api.js";
+import {
+  getData,
+  postData,
+  putData,
+  deleteData,
+  getSession,
+  clearSession,
+} from "./api.js";
+import { protect, protectElements, hasRole } from "./routeProtection.js";
 
-/* SESIÓN */
+protect("DASHBOARD");
+
 const session = getSession();
-if (!session) {
-  location.href = "./index.html";
-}
 
-/* DOM */
 const userBox = document.querySelector("#user-box");
 const navLinks = document.querySelector("#nav-links");
 const logoutBtn = document.querySelector("#logout-btn");
@@ -24,12 +29,10 @@ const categoryFilter = document.querySelector("#category-filter");
 const typeFilter = document.querySelector("#type-filter");
 const clearFilters = document.querySelector("#clear-filters");
 
-/* DATA */
 let offers = [];
 let applications = [];
 let editingId = null;
 
-/* UI SESIÓN */
 userBox.innerHTML = `
   <strong>${session.name}</strong>
   <small>${session.role === "admin" ? "Administrador" : "Usuario"}</small>
@@ -48,7 +51,6 @@ if (session.role === "admin") {
   `;
 }
 
-/* SECCIONES */
 const showSection = (id) => {
   document.querySelectorAll(".section").forEach((s) => {
     s.style.display = s.id === id ? "block" : "none";
@@ -61,7 +63,6 @@ navLinks.addEventListener("click", (e) => {
   showSection(link.dataset.section);
 });
 
-/* LOAD DATA  */
 const loadData = async () => {
   offers = (await getData("/offers")) || [];
   applications = (await getData("/applications")) || [];
@@ -71,7 +72,6 @@ const loadData = async () => {
   renderAdminOffers();
 };
 
-/* FILTROS */
 const applyFilters = (list) => {
   const term = searchInput.value.toLowerCase();
   const category = categoryFilter.value;
@@ -83,11 +83,10 @@ const applyFilters = (list) => {
         o.title.toLowerCase().includes(term) ||
         o.company.toLowerCase().includes(term)) &&
       (!category || o.category === category) &&
-      (!type || o.type === type)
+      (!type || o.type === type),
   );
 };
 
-/* OFERTAS (USER) */
 const renderOffers = () => {
   if (!offersGrid) return;
 
@@ -105,7 +104,7 @@ const renderOffers = () => {
             Aplicar
           </button>
         </article>
-      `
+      `,
         )
         .join("")
     : `<p>No hay ofertas</p>`;
@@ -120,7 +119,7 @@ offersGrid?.addEventListener("click", async (e) => {
   const already = applications.some(
     (a) =>
       String(a.userId) === String(session.id) &&
-      String(a.offerId) === String(offerId)
+      String(a.offerId) === String(offerId),
   );
 
   if (already) return;
@@ -135,20 +134,17 @@ offersGrid?.addEventListener("click", async (e) => {
   renderApplied();
 });
 
-/* POSTULACIONES (USER) */
 const renderApplied = () => {
   if (!appliedGrid) return;
 
   const mine = applications.filter(
-    (a) => String(a.userId) === String(session.id)
+    (a) => String(a.userId) === String(session.id),
   );
 
   appliedGrid.innerHTML = mine.length
     ? mine
         .map((a) => {
-          const offer = offers.find(
-            (o) => String(o.id) === String(a.offerId)
-          );
+          const offer = offers.find((o) => String(o.id) === String(a.offerId));
           if (!offer) return "";
           return `
           <article class="card">
@@ -162,7 +158,6 @@ const renderApplied = () => {
     : `<p>No has aplicado a ninguna oferta</p>`;
 };
 
-/* OFERTAS (ADMIN) */
 const renderAdminOffers = () => {
   if (!adminOffersGrid) return;
 
@@ -176,7 +171,7 @@ const renderAdminOffers = () => {
         <button class="btn btn-ghost" data-edit="${o.id}">Editar</button>
         <button class="btn btn-danger" data-delete="${o.id}">Eliminar</button>
       </article>
-    `
+    `,
         )
         .join("")
     : `<p>No hay ofertas</p>`;
@@ -186,8 +181,12 @@ adminOffersGrid?.addEventListener("click", async (e) => {
   const editBtn = e.target.closest("[data-edit]");
   const deleteBtn = e.target.closest("[data-delete]");
 
-  /* EDITAR */
   if (editBtn) {
+    if (!hasRole("admin")) {
+      alert("No tienes permisos para realizar esta acción");
+      return;
+    }
+
     const id = editBtn.dataset.edit;
     const offer = offers.find((o) => String(o.id) === String(id));
     if (!offer) return;
@@ -206,8 +205,12 @@ adminOffersGrid?.addEventListener("click", async (e) => {
     showSection("section-admin-form");
   }
 
-  /* ELIMINAR */
   if (deleteBtn) {
+    if (!hasRole("admin")) {
+      alert("No tienes permisos para realizar esta acción");
+      return;
+    }
+
     const id = deleteBtn.dataset.delete;
     if (!confirm("¿Eliminar esta oferta?")) return;
     await deleteData(`/offers/${id}`);
@@ -215,9 +218,13 @@ adminOffersGrid?.addEventListener("click", async (e) => {
   }
 });
 
-/* CREAR / EDITAR OFERTA */
 offerForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
+
+  if (!hasRole("admin")) {
+    alert("No tienes permisos para realizar esta acción");
+    return;
+  }
 
   const data = {
     title: offerForm.querySelector("#title").value.trim(),
@@ -243,7 +250,6 @@ offerForm?.addEventListener("submit", async (e) => {
   loadData();
 });
 
-/* CANCELAR EDICIÓN */
 cancelEditBtn?.addEventListener("click", () => {
   editingId = null;
   offerForm.reset();
@@ -251,15 +257,13 @@ cancelEditBtn?.addEventListener("click", () => {
   showSection("section-admin-offers");
 });
 
-/* LOGOUT */
 logoutBtn.addEventListener("click", () => {
   clearSession();
   location.href = "./index.html";
 });
 
-/* FILTROS */
 [searchInput, categoryFilter, typeFilter].forEach((el) =>
-  el?.addEventListener("input", renderOffers)
+  el?.addEventListener("input", renderOffers),
 );
 
 clearFilters?.addEventListener("click", () => {
@@ -269,11 +273,12 @@ clearFilters?.addEventListener("click", () => {
   renderOffers();
 });
 
-/* INIT  */
+if (!hasRole("admin")) {
+  protectElements('[data-section^="section-admin"]', ["admin"]);
+}
+
 showSection(
-  session.role === "admin"
-    ? "section-admin-offers"
-    : "section-all-offers"
+  session.role === "admin" ? "section-admin-offers" : "section-all-offers",
 );
 
 loadData();
