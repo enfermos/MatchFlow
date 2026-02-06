@@ -8,9 +8,16 @@
     let matches = [];
     let editingOfferId = null;
 
+    // Generar avatar con iniciales
+    const userName = session.name || session.nombre || 'Empresa';
+    const userInitial = userName.charAt(0).toUpperCase();
+
     document.querySelector("#user-box").innerHTML = `
-    <strong>${session.name || session.nombre || 'Empresa'}</strong>
-    <small>Empresa</small>
+        <div class="user-avatar">${userInitial}</div>
+        <div class="user-info">
+            <p class="user-name">${userName}</p>
+            <p class="user-role">Empresa</p>
+        </div>
     `;
 
     function showSection(name) {
@@ -25,6 +32,39 @@
     document.querySelector("#section-title").textContent = titles[name];
     }
 
+    function updateStats() {
+    const statsContainer = document.querySelector('#stats-container');
+    if (statsContainer) {
+        const candidatesCount = candidates.length;
+        const matchesCount = matches.length;
+        const offersCount = offers.length;
+
+        statsContainer.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 0.5rem; background: #eff6ff; padding: 0.5rem 1rem; border-radius: 8px;">
+            <i class="bi bi-people-fill" style="font-size: 1.5rem; color: #1e40af;"></i>
+            <div>
+            <div style="font-size: 1.25rem; font-weight: 700; color: #1e40af;">${candidatesCount}</div>
+            <div style="font-size: 0.75rem; color: #64748b;">Candidatos</div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem; background: #dcfce7; padding: 0.5rem 1rem; border-radius: 8px;">
+            <i class="bi bi-lightning-fill" style="font-size: 1.5rem; color: #166534;"></i>
+            <div>
+            <div style="font-size: 1.25rem; font-weight: 700; color: #166534;">${matchesCount}</div>
+            <div style="font-size: 0.75rem; color: #64748b;">Matches</div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem; background: #fef3c7; padding: 0.5rem 1rem; border-radius: 8px;">
+            <i class="bi bi-briefcase-fill" style="font-size: 1.5rem; color: #92400e;"></i>
+            <div>
+            <div style="font-size: 1.25rem; font-weight: 700; color: #92400e;">${offersCount}</div>
+            <div style="font-size: 0.75rem; color: #64748b;">Ofertas</div>
+            </div>
+        </div>
+        `;
+    }
+    }
+
     document.querySelector("#nav-links").addEventListener('click', (e) => {
     const link = e.target.closest('[data-section]');
     if (link) {
@@ -35,7 +75,9 @@
 
     async function loadCandidates() {
     const users = await getData('/users');
-    candidates = users?.filter(u => u.role !== 'admin') || [];
+    
+    // Solo mostrar candidatos (no empresas ni admins) que estén abiertos a trabajar
+    candidates = users?.filter(u => u.role === 'candidate' && u.openToWork === true) || [];
     
     const tbody = document.querySelector("#candidates-table tbody");
     const empty = document.querySelector("#candidates-empty");
@@ -43,21 +85,64 @@
     if (candidates.length === 0) {
         tbody.innerHTML = '';
         empty.style.display = 'block';
+        empty.textContent = 'No hay candidatos disponibles (con openToWork activado)';
         return;
     }
     
+    // Cargar reservas y matches para verificar estados
+    const reservations = await getData('/reservations') || [];
+    const allMatches = await getData('/matches') || [];
+    
     empty.style.display = 'none';
-    tbody.innerHTML = candidates.map(c => `
+    tbody.innerHTML = candidates.map(c => {
+        // Verificar si este candidato está reservado
+        const estaReservado = reservations.some(r => String(r.candidateId) === String(c.id));
+        const miReserva = reservations.find(r => 
+            String(r.candidateId) === String(c.id) && String(r.companyId) === String(session.id)
+        );
+        
+        // Verificar si ya tengo un match con este candidato
+        const tengoMatch = allMatches.find(m => 
+            String(m.candidateId) === String(c.id) && String(m.companyId) === String(session.id)
+        );
+        
+        // Privacidad: solo mostrar teléfono si hay match en estado contacted o mayor
+        const puedeVerContacto = tengoMatch && 
+            ['contacted', 'interview', 'hired'].includes(tengoMatch.status);
+        
+        const telefono = puedeVerContacto ? (c.telefono || 'No disponible') : '<i class="bi bi-lock-fill"></i> Oculto';
+        const correo = puedeVerContacto ? (c.correo || c.email) : '<i class="bi bi-lock-fill"></i> Contacta primero';
+        
+        let acciones = '';
+        if (miReserva) {
+            acciones = `
+                <span class="badge badge-warning" style="font-size: 0.75rem;">Tu reserva</span>
+                <button class="btn btn-danger btn-sm" data-liberar-reserva="${c.id}">Liberar</button>
+            `;
+        } else if (estaReservado) {
+            acciones = `<span class="badge badge-secondary" style="font-size: 0.75rem;">Reservado por otra empresa</span>`;
+        } else if (tengoMatch) {
+            acciones = `<span class="badge badge-info" style="font-size: 0.75rem;">Ya tienes match</span>`;
+        } else {
+            acciones = `
+                <button class="btn btn-accent btn-sm" data-create-match="${c.id}">Crear Match</button>
+                <button class="btn btn-ghost btn-sm" data-reservar="${c.id}">Reservar</button>
+            `;
+        }
+        
+        return `
         <tr>
-        <td>${c.nombre || c.name || 'Sin nombre'}</td>
-        <td>@${c.username || 'usuario'}</td>
-        <td>${c.correo || c.email || 'Sin correo'}</td>
-        <td>${c.profesion || 'Sin profesión'}</td>
-        <td><span class="badge ${getBadgeClass(c.disponibilidad)}">${c.disponibilidad || 'DISPONIBLE'}</span></td>
-        <td>${c.proceso || 'SIN_ASIGNAR'}</td>
-        <td><button class="btn btn-ghost btn-sm" data-view-profile="${c.id}">Ver perfil</button></td>
+            <td>${c.nombre || c.name || 'Sin nombre'}</td>
+            <td>${c.profesion || 'Sin profesión'}</td>
+            <td>${c.experiencia || 'No especificada'}</td>
+            <td>${correo}</td>
+            <td>${telefono}</td>
+            <td>${acciones}</td>
         </tr>
-    `).join('');
+    `;
+    }).join('');
+    
+    updateStats(); // Actualizar estadísticas
     }
 
     function getBadgeClass(d) {
@@ -90,23 +175,28 @@
         </div>
         </article>
     `).join('');
+    
+    updateStats(); // Actualizar estadísticas
     }
 
     async function loadMatches() {
-    const applications = await getData('/applications') || [];
+    const allMatches = await getData('/matches') || [];
     const users = await getData('/users') || [];
     const allOffers = await getData('/offers') || [];
     
-    matches = applications.map(app => {
-        const user = users.find(u => String(u.id) === String(app.userId));
-        const offer = allOffers.find(o => String(o.id) === String(app.offerId));
+    // Solo mis matches
+    matches = allMatches.filter(m => String(m.companyId) === String(session.id));
+    
+    matches = matches.map(m => {
+        const user = users.find(u => String(u.id) === String(m.candidateId));
+        const offer = allOffers.find(o => String(o.id) === String(m.offerId));
         
         return {
-        ...app,
-        userName: user?.nombre || user?.name || 'Usuario desconocido',
+        ...m,
+        userName: user?.nombre || user?.name || 'Candidato desconocido',
         userEmail: user?.correo || user?.email || 'N/A',
+        userPhone: user?.telefono || 'N/A',
         offerTitle: offer?.title || 'Oferta desconocida',
-        matchStatus: 'PENDIENTE'
         };
     });
     
@@ -120,19 +210,188 @@
     }
     
     empty.style.display = 'none';
-    tbody.innerHTML = matches.map(m => `
+    tbody.innerHTML = matches.map(m => {
+        // Opciones de estado
+        const estados = [
+            { value: 'pending', label: 'Pendiente' },
+            { value: 'contacted', label: 'Contactado' },
+            { value: 'interview', label: 'Entrevista' },
+            { value: 'hired', label: 'Contratado' },
+            { value: 'discarded', label: 'Descartado' }
+        ];
+        
+        const selectEstado = `
+            <select class="match-status-select" data-match-id="${m.id}" style="padding: 4px; font-size: 0.85rem;">
+                ${estados.map(e => `
+                    <option value="${e.value}" ${m.status === e.value ? 'selected' : ''}>
+                        ${e.label}
+                    </option>
+                `).join('')}
+            </select>
+        `;
+        
+        // Mostrar contacto solo si está en contacted o superior
+        const puedeVerContacto = ['contacted', 'interview', 'hired'].includes(m.status);
+        const contactInfo = puedeVerContacto 
+            ? `${m.userEmail}<br><small>${m.userPhone}</small>`
+            : `<span style="color: #888;"><i class="bi bi-lock-fill"></i> Cambia estado a "Contactado"</span>`;
+        
+        return `
         <tr>
-        <td>${m.userName}</td>
-        <td>${m.userEmail}</td>
-        <td>${m.offerTitle}</td>
-        <td><span class="badge badge-info">${m.matchStatus}</span></td>
-        <td>${m.date || 'N/A'}</td>
-        <td><button class="btn btn-ghost btn-sm" data-view-match="${m.id}">Ver detalle</button></td>
+            <td>${m.userName}</td>
+            <td>${m.offerTitle}</td>
+            <td>${selectEstado}</td>
+            <td>${contactInfo}</td>
+            <td><small>${new Date(m.createdAt).toLocaleDateString()}</small></td>
         </tr>
-    `).join('');
+    `;
+    }).join('');
+    
+    // Event listener para cambio de estado
+    document.querySelectorAll('.match-status-select').forEach(select => {
+        select.addEventListener('change', async (e) => {
+            const matchId = e.target.dataset.matchId;
+            const nuevoEstado = e.target.value;
+            
+            await putData(`/matches/${matchId}`, {
+                ...matches.find(m => m.id === matchId),
+                status: nuevoEstado
+            });
+            
+            loadMatches(); // Recargar para actualizar vista
+        });
+    });
+    
+    updateStats(); // Actualizar estadísticas
     }
 
     document.addEventListener('click', async (e) => {
+    // Crear match con candidato
+    const createMatchBtn = e.target.closest('[data-create-match]');
+    if (createMatchBtn) {
+        const candidateId = createMatchBtn.dataset.createMatch;
+        
+        // Pedir que seleccione una oferta
+        const misOfertas = offers.filter(o => String(o.companyId) === String(session.id));
+        
+        if (misOfertas.length === 0) {
+            alert('Primero debes crear una oferta de trabajo');
+            return;
+        }
+        
+        // Mostrar opciones simples
+        let opcionesHTML = 'Selecciona una oferta:\n\n';
+        misOfertas.forEach((o, i) => {
+            opcionesHTML += `${i + 1}. ${o.title}\n`;
+        });
+        
+        const seleccion = prompt(opcionesHTML + '\nIngresa el número de la oferta:');
+        if (!seleccion) return;
+        
+        const indice = parseInt(seleccion) - 1;
+        if (indice < 0 || indice >= misOfertas.length) {
+            alert('Selección inválida');
+            return;
+        }
+        
+        const ofertaSeleccionada = misOfertas[indice];
+        
+        // Crear el match
+        await postData('/matches', {
+            companyId: session.id,
+            candidateId: candidateId,
+            offerId: ofertaSeleccionada.id,
+            status: 'pending',
+            createdAt: new Date().toISOString()
+        });
+        
+        alert('Match creado exitosamente!');
+        loadCandidates();
+        loadMatches();
+        return;
+    }
+    
+    // Reservar candidato
+    const reservarBtn = e.target.closest('[data-reservar]');
+    if (reservarBtn) {
+        const candidateId = reservarBtn.dataset.reservar;
+        
+        // Pedir que seleccione una oferta
+        const misOfertas = offers.filter(o => String(o.companyId) === String(session.id));
+        
+        if (misOfertas.length === 0) {
+            alert('Primero debes crear una oferta de trabajo');
+            return;
+        }
+        
+        let opcionesHTML = 'Selecciona una oferta para reservar:\n\n';
+        misOfertas.forEach((o, i) => {
+            opcionesHTML += `${i + 1}. ${o.title}\n`;
+        });
+        
+        const seleccion = prompt(opcionesHTML + '\nIngresa el número:');
+        if (!seleccion) return;
+        
+        const indice = parseInt(seleccion) - 1;
+        if (indice < 0 || indice >= misOfertas.length) {
+            alert('Selección inválida');
+            return;
+        }
+        
+        const ofertaSeleccionada = misOfertas[indice];
+        
+        // Crear reserva
+        await postData('/reservations', {
+            companyId: session.id,
+            candidateId: candidateId,
+            offerId: ofertaSeleccionada.id,
+            createdAt: new Date().toISOString()
+        });
+        
+        // Actualizar el campo reservadoPor del usuario
+        const candidato = candidates.find(c => String(c.id) === String(candidateId));
+        if (candidato) {
+            await putData(`/users/${candidateId}`, {
+                ...candidato,
+                reservadoPor: session.id
+            });
+        }
+        
+        alert('Candidato reservado exitosamente!');
+        loadCandidates();
+        return;
+    }
+    
+    // Liberar reserva
+    const liberarBtn = e.target.closest('[data-liberar-reserva]');
+    if (liberarBtn) {
+        const candidateId = liberarBtn.dataset.liberarReserva;
+        
+        // Buscar la reserva
+        const reservas = await getData('/reservations') || [];
+        const reserva = reservas.find(r => 
+            String(r.candidateId) === String(candidateId) && 
+            String(r.companyId) === String(session.id)
+        );
+        
+        if (reserva) {
+            await deleteData(`/reservations/${reserva.id}`);
+            
+            // Limpiar el campo reservadoPor del usuario
+            const candidato = candidates.find(c => String(c.id) === String(candidateId));
+            if (candidato) {
+                await putData(`/users/${candidateId}`, {
+                    ...candidato,
+                    reservadoPor: null
+                });
+            }
+            
+            alert('Reserva liberada');
+            loadCandidates();
+        }
+        return;
+    }
+    
     const profileBtn = e.target.closest('[data-view-profile]');
     if (profileBtn) {
         const user = candidates.find(c => String(c.id) === String(profileBtn.dataset.viewProfile));
@@ -233,4 +492,6 @@
     });
 
     showSection('candidates');
+    loadCandidates();
+    loadCompanyOffers();
     loadMatches();

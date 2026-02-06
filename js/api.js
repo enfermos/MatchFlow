@@ -35,6 +35,19 @@ export const putData = async (endpoint, data) => {
   return res.json();
 };
 
+// PATCH (actualización parcial)
+export const patchData = async (endpoint, data) => {
+  const res = await fetch(API_BASE + endpoint, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) return null;
+
+  return res.json();
+};
+
 // DELETE
 export const deleteData = async (endpoint) => {
   const res = await fetch(API_BASE + endpoint, {

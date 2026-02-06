@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "json-server --watch src/data/db.json --port 3000",
+    "server": "json-server --watch db.json --port 3005",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
