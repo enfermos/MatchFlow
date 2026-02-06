@@ -5,28 +5,36 @@
       "name": "Admin",
       "email": "admin@demo.com",
       "password": "123456",
-      "role": "admin"
+      "role": "admin",
+      "planActive": true,
+      "plan": "Free"
     },
     {
       "id": "2",
       "name": "User",
       "email": "user@demo.com",
       "password": "123456",
-      "role": "user"
+      "role": "user",
+      "planActive": false,
+      "plan": "Pro"
     },
     {
       "id": "a2ff",
       "fullName": "este parcero",
       "email": "parcerito@gmail.com",
       "password": "123456",
-      "role": "user"
+      "role": "user",
+      "planActive": true,
+      "plan": "Premium"
     },
     {
       "id": "b7e1",
       "name": "pepe",
       "email": "pepito@hotmail.com",
       "password": "123",
-      "role": "user"
+      "role": "user",
+      "planActive": false,
+      "plan": "Pro"
     }
   ],
   "offers": [
