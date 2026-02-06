@@ -12,7 +12,7 @@
       "name": "User",
       "email": "user@demo.com",
       "password": "123456",
-      "role": "user"
+      "role": "candidate"
     }
   ],
   "offers": [

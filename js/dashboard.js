@@ -35,7 +35,7 @@ let editingId = null;
 
 userBox.innerHTML = `
   <strong>${session.name}</strong>
-  <small>${session.role === "admin" ? "Administrador" : "Usuario"}</small>
+  <small>${session.role === "admin" ? "Administrador" : session.role === "candidate" ? "Candidato" : "Empresa"}</small>
 `;
 
 if (session.role === "admin") {
@@ -44,10 +44,16 @@ if (session.role === "admin") {
     <a href="#" data-section="section-admin-form">Crear oferta</a>
     <a href="#" data-section="section-admin-applications">Postulaciones</a>
   `;
-} else {
+} else if (session.role === "candidate") {
   navLinks.innerHTML = `
     <a href="#" data-section="section-all-offers">Todas las ofertas</a>
     <a href="#" data-section="section-applied">Mis postulaciones</a>
+  `;
+} else if (session.role === "company") {
+  navLinks.innerHTML = `
+    <a href="#" data-section="section-company-dashboard">Dashboard</a>
+    <a href="#" data-section="section-company-offers">Mis ofertas</a>
+    <a href="#" data-section="section-company-form">Crear oferta</a>
   `;
 }
 
@@ -277,8 +283,18 @@ if (!hasRole("admin")) {
   protectElements('[data-section^="section-admin"]', ["admin"]);
 }
 
+if (!hasRole("candidate")) {
+  protectElements('[data-section^="section-candidate"]', ["candidate"]);
+}
+
+if (!hasRole("company")) {
+  protectElements('[data-section^="section-company"]', ["company"]);
+}
+
 showSection(
-  session.role === "admin" ? "section-admin-offers" : "section-all-offers",
+  session.role === "admin" ? "section-admin-offers" : 
+  session.role === "candidate" ? "section-all-offers" : 
+  "section-company-dashboard",
 );
 
 loadData();

@@ -79,7 +79,7 @@ if (registerForm) {
       name,
       email,
       password,
-      role: "user",
+      role: "candidate",
     });
 
     clearSession();
