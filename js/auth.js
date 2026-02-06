@@ -1,4 +1,11 @@
-import { getData, postData, setSession, getSession, clearSession } from "./api.js";
+import {
+  getData,
+  postData,
+  setSession,
+  getSession,
+  clearSession,
+} from "./api.js";
+import { protect } from "./routeProtection.js";
 
 const loginForm = document.querySelector("#login-form");
 const registerForm = document.querySelector("#register-form");
@@ -7,12 +14,14 @@ const showAlert = (el, msg, type = "error") => {
   el.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
 };
 
-/* REDIRECCIÓN SI YA LOGUEADO */
-if (getSession() && location.pathname.includes("index")) {
-  location.href = "./dashboard.html";
+if (location.pathname.includes("index.html") || location.pathname === "/") {
+  protect("LOGIN");
 }
 
-/* LOGIN */
+if (location.pathname.includes("register.html")) {
+  protect("REGISTER");
+}
+
 if (loginForm) {
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -43,7 +52,6 @@ if (loginForm) {
   });
 }
 
-/* REGISTRO */
 if (registerForm) {
   registerForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -51,11 +59,12 @@ if (registerForm) {
     const alertBox = document.querySelector("#register-alert");
     alertBox.innerHTML = "";
 
-    const name = document.querySelector("#name").value.trim();
+const name = document.querySelector("#name").value.trim();
     const email = document.querySelector("#email").value.trim().toLowerCase();
     const password = document.querySelector("#password").value.trim();
+    const role = document.querySelector("#role").value.trim();
 
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !role) {
       showAlert(alertBox, "Completa todos los campos");
       return;
     }
@@ -67,11 +76,11 @@ if (registerForm) {
       return;
     }
 
-    await postData("/users", {
+await postData("/users", {
       name,
       email,
       password,
-      role: "user",
+      role,
     });
 
     clearSession();
