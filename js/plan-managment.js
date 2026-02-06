@@ -1,4 +1,4 @@
-import { getData, deleteData } from "./api.js";
+import { getData, deleteData, postData, putData } from "./api.js";
 
 const $ = (s) => document.querySelector(s);
 const userHtml = (id, name, plan, planColor, status, statusColor) => {
@@ -40,7 +40,7 @@ const adminHtml = (id, name, plan, planColor, status, statusColor) => {
   `;
 };
 
-document.addEventListener("click", (e) => {
+document.addEventListener("click", async (e) => {
   const action = e.target.dataset.action;
   if (!action) return;
   const id = e.target.dataset.id;
@@ -49,6 +49,52 @@ document.addEventListener("click", (e) => {
     case "delete":
       deleteData("/users/" + id);
       renderHTML();
+      break;
+
+    case "modal":
+      $("#name").value = "";
+      $("#email").value = "";
+      $("#modal").dataset.action = "";
+      $("#modal").classList.toggle("hidden");
+      break;
+
+    case "edit":
+      const user = await getData("/users/" + id);
+      $("#name").value = user.name;
+      $("#email").value = user.email;
+      $("#modal").classList.toggle("hidden");
+      $("#modal").dataset.action = "edit";
+  }
+});
+
+document.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const action = e.target.dataset.action;
+  if (!action) return;
+
+  switch (action) {
+    case "edit":
+      putData("/users", {
+        name: $("#name").value,
+        email: $("#email").value,
+        password: $("#password").value,
+        role: $("#role").value,
+        planStatus: $("#planStatus").value,
+        plan: $("#plan").value,
+      });
+      $("#modal").classList.toggle("hidden");
+      break;
+
+    case "":
+      postData("/users", {
+        name: $("#name").value,
+        email: $("#email").value,
+        password: $("#password").value,
+        role: $("#role").value,
+        planStatus: $("#planStatus").value,
+        plan: $("#plan").value,
+      });
+      $("#modal").classList.toggle("hidden");
   }
 });
 
