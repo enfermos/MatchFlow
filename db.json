@@ -26,15 +26,6 @@
       "role": "user",
       "planStatus": "Inactivo",
       "plan": "Premium"
-    },
-    {
-      "id": "b7e1",
-      "name": "pepe",
-      "email": "pepito@hotmail.com",
-      "password": "123",
-      "role": "user",
-      "planStatus": "Inactivo",
-      "plan": "Pro"
     }
   ],
   "offers": [
@@ -86,13 +77,13 @@
     },
     {
       "id": "e3a3",
-      "userId": "b7e1",
+      "userId": null,
       "offerId": "f813",
       "date": "2/4/2026"
     },
     {
       "id": "b1a2",
-      "userId": "b7e1",
+      "userId": null,
       "offerId": "7201",
       "date": "2/4/2026"
     }

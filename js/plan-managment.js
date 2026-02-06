@@ -1,4 +1,4 @@
-import { getData } from "./api.js";
+import { getData, deleteData } from "./api.js";
 
 const $ = (s) => document.querySelector(s);
 const userHtml = (id, name, plan, planColor, status, statusColor) => {
@@ -13,8 +13,9 @@ const userHtml = (id, name, plan, planColor, status, statusColor) => {
           >
       </td>
       <td class="p-3 ${statusColor}">${status}</td>
-      <td class="p-3 text-blue-600 cursor-pointer">
-          EDITAR
+      <td class="p-3 flex gap-4">
+        <button class="text-blue-600 cursor-pointer" data-id="${id}" data-action="edit">EDITAR</button>
+        <button class="text-red-600 cursor-pointer" data-id="${id}" data-action="delete">DELETE</button>
       </td>
   </tr>
   `;
@@ -31,10 +32,25 @@ const adminHtml = (id, name, plan, planColor, status, statusColor) => {
           >
       </td>
       <td class="p-3 ${statusColor}">${status}</td>
-      <td class="p-3 text-blue-600">EDITAR</td>
+      <td class="p-3 flex gap-4">
+        <button class="text-blue-600 cursor-pointer" data-id="${id}" data-action="edit">EDITAR</button>
+        <button class="text-red-600 cursor-pointer" data-id="${id}" data-action="delete">DELETE</button>
+      </td>
   </tr>
   `;
 };
+
+document.addEventListener("click", (e) => {
+  const action = e.target.dataset.action;
+  if (!action) return;
+  const id = e.target.dataset.id;
+
+  switch (action) {
+    case "delete":
+      deleteData("/users/" + id);
+      renderHTML();
+  }
+});
 
 (async function renderHTML() {
   const users = await getData("/users");
