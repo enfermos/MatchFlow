@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>MatchFlow Admin Panel</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body class="bg-slate-100 text-slate-800">
+        <div class="flex min-h-screen">
+            <!-- Sidebar -->
+            <aside class="w-64 bg-white border-r flex flex-col">
+                <div class="p-6 font-bold text-xl text-blue-600">
+                    MatchFlow<br /><span class="text-sm text-slate-400"
+                        >ADMIN PANEL</span
+                    >
+                </div>
+                <nav class="flex-1 px-4 space-y-2">
+                    <a
+                        class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-slate-100"
+                        href="#"
+                        >Dashboard</a
+                    >
+                    <a
+                        class="flex items-center gap-3 px-4 py-2 rounded-lg bg-blue-50 text-blue-600 font-medium"
+                        href="#"
+                        >Plan Management</a
+                    >
+                    <a
+                        class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-slate-100"
+                        href="#"
+                        >Analytics</a
+                    >
+                    <a
+                        class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-slate-100"
+                        href="#"
+                        >User Directory</a
+                    >
+                    <a
+                        class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-slate-100"
+                        href="#"
+                        >Settings</a
+                    >
+                </nav>
+                <div class="p-4 border-t text-sm">
+                    <p class="font-medium">Carlos Admin</p>
+                    <p class="text-slate-400">Super Admin</p>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 p-8 space-y-8">
+                <!-- Header -->
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-2xl font-bold">
+                            Gestión Global de Planes
+                        </h1>
+                        <p class="text-slate-500">
+                            Supervisa y ajusta las suscripciones de toda la
+                            plataforma
+                        </p>
+                    </div>
+                    <div class="flex gap-3">
+                        <button
+                            class="px-4 py-2 rounded-lg bg-blue-600 text-white"
+                        >
+                            Crear Nuevo Plan
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <p class="text-slate-500">Total Usuarios</p>
+                        <h2 class="text-2xl font-bold">24,560</h2>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <p class="text-slate-500">Planes Premium Activos</p>
+                        <h2 class="text-2xl font-bold">1,892</h2>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <p class="text-slate-500">Ingresos Mensuales</p>
+                        <h2 class="text-2xl font-bold">$45,200</h2>
+                    </div>
+                </div>
+
+                <!-- Users Table -->
+                <div class="bg-white rounded-xl shadow-sm">
+                    <div class="flex justify-between items-center p-6 border-b">
+                        <h3 class="font-semibold">
+                            Gestión de Usuarios (Candidatos)
+                        </h3>
+                    </div>
+                    <table class="w-full text-sm">
+                        <thead class="bg-slate-50 text-slate-500">
+                            <tr>
+                                <th class="p-3 text-left">ID</th>
+                                <th class="p-3 text-left">Nombre</th>
+                                <th class="p-3 text-left">Plan</th>
+                                <th class="p-3 text-left">Estado</th>
+                                <th class="p-3 text-left">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-t">
+                                <td class="p-3">#C-1024</td>
+                                <td class="p-3">Alex Rivera</td>
+                                <td class="p-3">
+                                    <span
+                                        class="px-2 py-1 bg-purple-100 text-purple-600 rounded"
+                                        >Premium</span
+                                    >
+                                </td>
+                                <td class="p-3 text-green-600">Activo</td>
+                                <td class="p-3 text-blue-600 cursor-pointer">
+                                    EDITAR
+                                </td>
+                            </tr>
+                            <tr class="border-t">
+                                <td class="p-3">#C-1025</td>
+                                <td class="p-3">Maria Chen</td>
+                                <td class="p-3">
+                                    <span class="px-2 py-1 bg-slate-100 rounded"
+                                        >Básico</span
+                                    >
+                                </td>
+                                <td class="p-3 text-yellow-600">Pendiente</td>
+                                <td class="p-3 text-blue-600 cursor-pointer">
+                                    EDITAR
+                                </td>
+                            </tr>
+                            <tr class="border-t">
+                                <td class="p-3">#C-1026</td>
+                                <td class="p-3">Jordan Smith</td>
+                                <td class="p-3">
+                                    <span
+                                        class="px-2 py-1 bg-blue-100 text-blue-600 rounded"
+                                        >Pro</span
+                                    >
+                                </td>
+                                <td class="p-3 text-red-600">Expirado</td>
+                                <td class="p-3 text-blue-600 cursor-pointer">
+                                    EDITAR
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Companies Table -->
+                <div class="bg-white rounded-xl shadow-sm">
+                    <div class="flex justify-between items-center p-6 border-b">
+                        <h3 class="font-semibold">Gestión de Empresas</h3>
+                    </div>
+                    <table class="w-full text-sm">
+                        <thead class="bg-slate-50 text-slate-500">
+                            <tr>
+                                <th class="p-3 text-left">ID</th>
+                                <th class="p-3 text-left">Empresa</th>
+                                <th class="p-3 text-left">Plan</th>
+                                <th class="p-3 text-left">Facturación</th>
+                                <th class="p-3 text-left">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-t">
+                                <td class="p-3">#E-5001</td>
+                                <td class="p-3">TechNova Solutions</td>
+                                <td class="p-3">
+                                    <span
+                                        class="px-2 py-1 bg-orange-100 text-orange-600 rounded"
+                                        >Enterprise</span
+                                    >
+                                </td>
+                                <td class="p-3 text-green-600">Al día</td>
+                                <td class="p-3 text-blue-600">EDITAR</td>
+                            </tr>
+                            <tr class="border-t">
+                                <td class="p-3">#E-5002</td>
+                                <td class="p-3">GreenLoop S.A.</td>
+                                <td class="p-3">
+                                    <span
+                                        class="px-2 py-1 bg-green-100 text-green-600 rounded"
+                                        >Startup</span
+                                    >
+                                </td>
+                                <td class="p-3 text-red-600">Pago Atrasado</td>
+                                <td class="p-3 text-blue-600">EDITAR</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </body>
+</html>
