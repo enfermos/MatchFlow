@@ -48,7 +48,12 @@ if (loginForm) {
       role: user.role,
     });
 
-    location.href = "./dashboard.html";
+    // Redirigir según el rol
+    if (user.role === 'company') {
+      location.href = "./dashboard-company.html";
+    } else {
+      location.href = "./dashboard.html";
+    }
   });
 }
 

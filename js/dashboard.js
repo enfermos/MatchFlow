@@ -39,6 +39,16 @@ function initializeDashboard() {
     return;
   }
   
+<<<<<<< HEAD
+=======
+  // Redirigir empresas a su dashboard específico
+  if (session.role === 'company') {
+    console.log('Company detected, redirecting to dashboard-company.html');
+    window.location.href = './dashboard-company.html';
+    return;
+  }
+  
+>>>>>>> c7ac823 (feat: Implement user subscription plans management for candidates and companies)
   // Obtener elementos del DOM
   userBox = document.querySelector("#user-box");
   navLinks = document.querySelector("#nav-links");
@@ -88,10 +98,17 @@ function initSidebar() {
 
   if (userBox) {
     userBox.innerHTML = `
+<<<<<<< HEAD
       <div class="user-avatar">${userInitial}</div>
       <div class="user-info">
         <p class="user-name">${userName}</p>
         <p class="user-role">${roleLabel}</p>
+=======
+      <div class="avatar">${userInitial}</div>
+      <div class="user-details">
+        <strong>${userName}</strong>
+        <small>${roleLabel}</small>
+>>>>>>> c7ac823 (feat: Implement user subscription plans management for candidates and companies)
       </div>
     `;
     console.log('userBox populated');
@@ -113,6 +130,10 @@ function initSidebar() {
       navLinks.innerHTML = `
         <a href="#" data-section="section-all-offers" class="active"><i class="bi bi-search"></i> Ver Ofertas</a>
         <a href="#" data-section="section-applied"><i class="bi bi-lightning-fill"></i> Mis Matches</a>
+<<<<<<< HEAD
+=======
+        <a href="planes.html"><i class="bi bi-award"></i> Gestión de Planes</a>
+>>>>>>> c7ac823 (feat: Implement user subscription plans management for candidates and companies)
         <a href="profile_user.html"><i class="bi bi-person-circle"></i> Mi Perfil</a>
       `;
     } else if (session.role === "company") {

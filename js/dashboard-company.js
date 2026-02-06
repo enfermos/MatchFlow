@@ -1,13 +1,15 @@
-        import { getData, postData, putData, deleteData, getSession, clearSession } from "./api.js";
+import { getData, postData, putData, deleteData, patchData, getSession, clearSession } from "./api.js";
 
-    const session = getSession();
-    if (!session) location.href = "./index.html";
+const session = getSession();
+if (!session) location.href = "./index.html";
 
-    let candidates = [];
-    let offers = [];
-    let matches = [];
-    let editingOfferId = null;
+// Redirigir no-empresas a dashboard.html
+if (session.role !== 'company') {
+    console.log('Non-company user detected, redirecting to dashboard.html');
+    window.location.href = './dashboard.html';
+}
 
+<<<<<<< HEAD
     // Generar avatar con iniciales
     const userName = session.name || session.nombre || 'Empresa';
     const userInitial = userName.charAt(0).toUpperCase();
@@ -19,8 +21,26 @@
             <p class="user-role">Empresa</p>
         </div>
     `;
+=======
+let candidates = [];
+let offers = [];
+let matches = [];
+let editingOfferId = null;
+>>>>>>> c7ac823 (feat: Implement user subscription plans management for candidates and companies)
 
-    function showSection(name) {
+// Generar avatar con iniciales
+const userName = session.name || session.nombre || 'Empresa';
+const userInitial = userName.charAt(0).toUpperCase();
+
+document.querySelector("#user-box").innerHTML = `
+    <div class="avatar">${userInitial}</div>
+    <div class="user-details">
+        <strong>${userName}</strong>
+        <small>Empresa</small>
+    </div>
+`;
+
+function showSection(name) {
     document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
     document.querySelector(`#section-${name}`).style.display = 'block';
     
@@ -30,6 +50,39 @@
     
     const titles = { candidates: 'Candidatos', offers: 'Mis Ofertas', matches: 'Match' };
     document.querySelector("#section-title").textContent = titles[name];
+}
+
+    function updateStats() {
+    const statsContainer = document.querySelector('#stats-container');
+    if (statsContainer) {
+        const candidatesCount = candidates.length;
+        const matchesCount = matches.length;
+        const offersCount = offers.length;
+
+        statsContainer.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 0.5rem; background: #eff6ff; padding: 0.5rem 1rem; border-radius: 8px;">
+            <i class="bi bi-people-fill" style="font-size: 1.5rem; color: #1e40af;"></i>
+            <div>
+            <div style="font-size: 1.25rem; font-weight: 700; color: #1e40af;">${candidatesCount}</div>
+            <div style="font-size: 0.75rem; color: #64748b;">Candidatos</div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem; background: #dcfce7; padding: 0.5rem 1rem; border-radius: 8px;">
+            <i class="bi bi-lightning-fill" style="font-size: 1.5rem; color: #166534;"></i>
+            <div>
+            <div style="font-size: 1.25rem; font-weight: 700; color: #166534;">${matchesCount}</div>
+            <div style="font-size: 0.75rem; color: #64748b;">Matches</div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem; background: #fef3c7; padding: 0.5rem 1rem; border-radius: 8px;">
+            <i class="bi bi-briefcase-fill" style="font-size: 1.5rem; color: #92400e;"></i>
+            <div>
+            <div style="font-size: 1.25rem; font-weight: 700; color: #92400e;">${offersCount}</div>
+            <div style="font-size: 0.75rem; color: #64748b;">Ofertas</div>
+            </div>
+        </div>
+        `;
+    }
     }
 
     function updateStats() {
@@ -271,6 +324,57 @@
     if (createMatchBtn) {
         const candidateId = createMatchBtn.dataset.createMatch;
         
+<<<<<<< HEAD
+=======
+        // VERIFICAR LÍMITE DEL PLAN DE LA EMPRESA
+        const companyData = await getData(`/users/${session.id}`);
+        if (!companyData) {
+            alert('Error al obtener datos de la empresa');
+            return;
+        }
+        
+        // Planes de empresa y límites
+        const PLANES_EMPRESA = {
+            free: { limite: 5 },
+            comercial: { limite: 50 },
+            empresa: { limite: -1 } // ilimitado
+        };
+        
+        const planEmpresa = companyData.plan || 'free';
+        const contactosUsados = companyData.contactosUsados || 0;
+        const limiteEmpresa = PLANES_EMPRESA[planEmpresa].limite;
+        
+        // Verificar si la empresa alcanzó su límite
+        if (limiteEmpresa !== -1 && contactosUsados >= limiteEmpresa) {
+            alert(`Has alcanzado tu límite de ${limiteEmpresa} contactos mensuales (Plan ${planEmpresa.toUpperCase()}). Actualiza tu plan para poder contactar más candidatos.`);
+            return;
+        }
+        
+        // VERIFICAR LÍMITE DEL PLAN DEL CANDIDATO
+        const candidateData = await getData(`/users/${candidateId}`);
+        if (!candidateData) {
+            alert('Error al obtener datos del candidato');
+            return;
+        }
+        
+        // Planes y límites
+        const PLANES = {
+            free: { limite: 3 },
+            pro1: { limite: 10 },
+            pro2: { limite: -1 } // ilimitado
+        };
+        
+        const planCandidato = candidateData.plan || 'free';
+        const matchesUsados = candidateData.matchesUsados || 0;
+        const limitePlan = PLANES[planCandidato].limite;
+        
+        // Verificar si alcanzó el límite
+        if (limitePlan !== -1 && matchesUsados >= limitePlan) {
+            alert(`Este candidato alcanzó su límite de ${limitePlan} matches mensuales (Plan ${planCandidato.toUpperCase()}). No puede recibir más matches hasta el próximo mes.`);
+            return;
+        }
+        
+>>>>>>> c7ac823 (feat: Implement user subscription plans management for candidates and companies)
         // Pedir que seleccione una oferta
         const misOfertas = offers.filter(o => String(o.companyId) === String(session.id));
         
@@ -305,6 +409,19 @@
             createdAt: new Date().toISOString()
         });
         
+<<<<<<< HEAD
+=======
+        // Incrementar contador de matches del candidato
+        await patchData(`/users/${candidateId}`, {
+            matchesUsados: matchesUsados + 1
+        });
+        
+        // Incrementar contador de contactos de la empresa
+        await patchData(`/users/${session.id}`, {
+            contactosUsados: contactosUsados + 1
+        });
+        
+>>>>>>> c7ac823 (feat: Implement user subscription plans management for candidates and companies)
         alert('Match creado exitosamente!');
         loadCandidates();
         loadMatches();

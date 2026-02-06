@@ -16,10 +16,17 @@ function actualizarSidebarYHeader() {
     const userBox = document.getElementById('user-box');
     if (userBox) {
         userBox.innerHTML = `
+<<<<<<< HEAD
             <div class="user-avatar">${userInitial}</div>
             <div class="user-info">
                 <p class="user-name">${userName}</p>
                 <p class="user-role">${roleLabel}</p>
+=======
+            <div class="avatar">${userInitial}</div>
+            <div class="user-details">
+                <strong>${userName}</strong>
+                <small>${roleLabel}</small>
+>>>>>>> c7ac823 (feat: Implement user subscription plans management for candidates and companies)
             </div>
         `;
     }
@@ -200,7 +207,14 @@ async function guardarPerfil(e) {
     if (!correo.includes('@')) return alert('Correo no válido');
     if (edad && (isNaN(edad) || +edad < 0)) return alert('Edad no válida');
     
-    const payload = { nombre, username, correo, profesion };
+    const payload = { 
+        nombre, 
+        username, 
+        correo, 
+        profesion,  
+        password: originalData.password,
+        role: originalData.role
+    };
     if (edad) payload.edad = +edad;
     if (experiencia) payload.experiencia = experiencia;
     if (originalData.disponibilidad !== 'RESERVADO') payload.disponibilidad = disponibilidad;
