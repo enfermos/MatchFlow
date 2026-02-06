@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:3005";
+const API_BASE = "https://backmatch.onrender.com";
 
 // GET
 export const getData = async (endpoint) => {

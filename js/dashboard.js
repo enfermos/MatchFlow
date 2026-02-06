@@ -22,39 +22,36 @@ let applications = [];
 let editingId = null;
 
 // Inicializar cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOMContentLoaded fired');
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("DOMContentLoaded fired");
   initializeDashboard();
 });
 
 function initializeDashboard() {
-  console.log('initializeDashboard called');
-  
+  console.log("initializeDashboard called");
+
   // Obtener sesión
   session = getSession();
-  console.log('Session:', session);
-  
+  console.log("Session:", session);
+
   if (!session) {
-    console.error('No session found');
+    console.error("No session found");
     return;
   }
-  
-<<<<<<< HEAD
-=======
+
   // Redirigir empresas a su dashboard específico
-  if (session.role === 'company') {
-    console.log('Company detected, redirecting to dashboard-company.html');
-    window.location.href = './dashboard-company.html';
+  if (session.role === "company") {
+    console.log("Company detected, redirecting to dashboard-company.html");
+    window.location.href = "./dashboard-company.html";
     return;
   }
-  
->>>>>>> c7ac823 (feat: Implement user subscription plans management for candidates and companies)
+
   // Obtener elementos del DOM
   userBox = document.querySelector("#user-box");
   navLinks = document.querySelector("#nav-links");
   logoutBtn = document.querySelector("#logout-btn");
-  
-  console.log('Elements found:', { userBox, navLinks, logoutBtn });
+
+  console.log("Elements found:", { userBox, navLinks, logoutBtn });
 
   offersGrid = document.querySelector("#offers-grid");
   appliedGrid = document.querySelector("#applied-grid");
@@ -71,54 +68,53 @@ function initializeDashboard() {
 
   // Inicializar sidebar
   initSidebar();
-  
+
   // Configurar event listeners
   setupEventListeners();
-  
+
   // Proteger elementos por rol
   protectByRole();
-  
+
   // Mostrar sección inicial
   showInitialSection();
-  
+
   // Cargar datos
   loadData();
 }
 
 // Función para inicializar el sidebar
 function initSidebar() {
-  console.log('initSidebar called');
-  console.log('Session role:', session?.role);
-  console.log('navLinks element:', navLinks);
-  
+  console.log("initSidebar called");
+  console.log("Session role:", session?.role);
+  console.log("navLinks element:", navLinks);
+
   // Generar avatar con iniciales
-  const userName = session.name || 'Usuario';
+  const userName = session.name || "Usuario";
   const userInitial = userName.charAt(0).toUpperCase();
-  const roleLabel = session.role === "admin" ? "Administrador" : session.role === "candidate" ? "Candidato" : "Empresa";
+  const roleLabel =
+    session.role === "admin"
+      ? "Administrador"
+      : session.role === "candidate"
+        ? "Candidato"
+        : "Empresa";
 
   if (userBox) {
     userBox.innerHTML = `
-<<<<<<< HEAD
-      <div class="user-avatar">${userInitial}</div>
-      <div class="user-info">
-        <p class="user-name">${userName}</p>
-        <p class="user-role">${roleLabel}</p>
-=======
+
       <div class="avatar">${userInitial}</div>
       <div class="user-details">
         <strong>${userName}</strong>
         <small>${roleLabel}</small>
->>>>>>> c7ac823 (feat: Implement user subscription plans management for candidates and companies)
       </div>
     `;
-    console.log('userBox populated');
+    console.log("userBox populated");
   } else {
-    console.error('userBox element not found');
+    console.error("userBox element not found");
   }
 
   if (navLinks) {
-    console.log('Populating navLinks for role:', session.role);
-    
+    console.log("Populating navLinks for role:", session.role);
+
     if (session.role === "admin") {
       navLinks.innerHTML = `
         <a href="#" data-section="section-admin-offers" class="active"><i class="bi bi-briefcase-fill"></i> Ofertas</a>
@@ -130,10 +126,7 @@ function initSidebar() {
       navLinks.innerHTML = `
         <a href="#" data-section="section-all-offers" class="active"><i class="bi bi-search"></i> Ver Ofertas</a>
         <a href="#" data-section="section-applied"><i class="bi bi-lightning-fill"></i> Mis Matches</a>
-<<<<<<< HEAD
-=======
         <a href="planes.html"><i class="bi bi-award"></i> Gestión de Planes</a>
->>>>>>> c7ac823 (feat: Implement user subscription plans management for candidates and companies)
         <a href="profile_user.html"><i class="bi bi-person-circle"></i> Mi Perfil</a>
       `;
     } else if (session.role === "company") {
@@ -144,7 +137,7 @@ function initSidebar() {
       `;
     } else {
       // Rol desconocido o inválido
-      console.error('Rol no válido:', session.role);
+      console.error("Rol no válido:", session.role);
       navLinks.innerHTML = `
         <div style="padding: 1rem; color: #ef4444; text-align: center;">
           <i class="bi bi-exclamation-triangle-fill"></i>
@@ -153,11 +146,11 @@ function initSidebar() {
         </div>
       `;
     }
-    
-    console.log('navLinks populated. HTML:', navLinks.innerHTML);
-    console.log('Sidebar inicializado correctamente');
+
+    console.log("navLinks populated. HTML:", navLinks.innerHTML);
+    console.log("Sidebar inicializado correctamente");
   } else {
-    console.error('navLinks element not found');
+    console.error("navLinks element not found");
   }
 }
 
@@ -165,9 +158,9 @@ const showSection = (id) => {
   document.querySelectorAll(".section").forEach((s) => {
     s.style.display = s.id === id ? "block" : "none";
   });
-  
+
   // Actualizar clase active en los links del nav
-  document.querySelectorAll("#nav-links a[data-section]").forEach(link => {
+  document.querySelectorAll("#nav-links a[data-section]").forEach((link) => {
     if (link.dataset.section === id) {
       link.classList.add("active");
     } else {
@@ -248,17 +241,21 @@ function setupEventListeners() {
       const data = {
         title: document.querySelector("#company-offer-title").value.trim(),
         company: document.querySelector("#company-offer-company").value.trim(),
-        location: document.querySelector("#company-offer-location").value.trim(),
+        location: document
+          .querySelector("#company-offer-location")
+          .value.trim(),
         category: document.querySelector("#company-offer-category").value,
         type: document.querySelector("#company-offer-type").value,
         salary: document.querySelector("#company-offer-salary").value.trim(),
-        description: document.querySelector("#company-offer-description").value.trim(),
-        companyId: session.id
+        description: document
+          .querySelector("#company-offer-description")
+          .value.trim(),
+        companyId: session.id,
       };
 
       try {
         await postData("/offers", data);
-        
+
         // Mostrar mensaje de éxito
         const alertDiv = document.querySelector("#company-offer-form-alert");
         if (alertDiv) {
@@ -271,10 +268,10 @@ function setupEventListeners() {
             alertDiv.innerHTML = "";
           }, 3000);
         }
-        
+
         companyOfferForm.reset();
         loadData();
-        
+
         // Cambiar a la sección de ofertas después de crear
         setTimeout(() => {
           showSection("section-company-offers");
@@ -343,9 +340,11 @@ function protectByRole() {
 
 function showInitialSection() {
   showSection(
-    session.role === "admin" ? "section-admin-offers" : 
-    session.role === "candidate" ? "section-all-offers" : 
-    "section-company-dashboard",
+    session.role === "admin"
+      ? "section-admin-offers"
+      : session.role === "candidate"
+        ? "section-all-offers"
+        : "section-company-dashboard",
   );
 }
 
@@ -403,7 +402,7 @@ const renderApplied = async () => {
   if (!appliedGrid) return;
 
   // Buscar matches donde yo soy el candidato
-  const allMatches = await getData("/matches") || [];
+  const allMatches = (await getData("/matches")) || [];
   const mine = allMatches.filter(
     (m) => String(m.candidateId) === String(session.id),
   );
@@ -413,16 +412,16 @@ const renderApplied = async () => {
         .map((m) => {
           const offer = offers.find((o) => String(o.id) === String(m.offerId));
           if (!offer) return "";
-          
+
           // Mostrar estado del match
           const estados = {
             pending: '<i class="bi bi-hourglass-split"></i> Pendiente',
             contacted: '<i class="bi bi-envelope-check-fill"></i> Contactado',
             interview: '<i class="bi bi-chat-left-dots-fill"></i> Entrevista',
             hired: '<i class="bi bi-check-circle-fill"></i> Contratado',
-            discarded: '<i class="bi bi-x-circle-fill"></i> Descartado'
+            discarded: '<i class="bi bi-x-circle-fill"></i> Descartado',
           };
-          
+
           return `
           <article class="card">
             <h4>${offer.title}</h4>
