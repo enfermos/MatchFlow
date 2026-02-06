@@ -1,150 +1,31 @@
-{
-  "users": [
-    {
-      "id": "1",
-      "name": "Admin",
-      "email": "admin@demo.com",
-      "password": "123456",
-      "role": "admin"
-    },
-    {
-      "id": "2",
-      "name": "Company",
-      "email": "company@demo.com",
-      "password": "123456",
-      "role": "company"
-    },
-    {
-      "id": "3",
-      "name": "User",
-      "email": "user@demo.com",
-      "password": "123456",
-      "role": "candidate"
-    }
-  ],
-  "offers": [
-    {
-      "id": "f813",
-      "title": "swwswwsw11111111",
-      "company": "wswswsws",
-      "location": "wswsws",
-      "category": "wswsws",
-      "type": "wswsws",
-      "salary": "wswswsws",
-      "description": "wswswswsws"
-    }
-  ],
-  "applications": [
-    {
-      "id": "e448",
-      "userId": "2",
-      "offerId": 1,
-      "date": "4/2/2026"
-    },
-    {
-      "id": "e62c",
-      "userId": "2",
-      "offerId": 4,
-      "date": "4/2/2026"
-    },
-    {
-      "id": "9e35",
-      "userId": "1",
-      "offerId": null,
-      "date": "4/2/2026"
-    },
-    {
-      "id": "ffe6",
-      "userId": "2",
-      "offerId": "f813",
-      "date": "4/2/2026"
-    }
-  ],
-  "candidates": [
-    {
-      "id": "c1",
-      "userId": "2",
-      "name": "John Doe",
-      "email": "john@demo.com",
-      "phone": "+1234567890",
-      "location": "New York",
-      "experience": "5 years",
-      "skills": ["JavaScript", "React", "Node.js"],
-      "bio": "Full-stack developer passionate about creating amazing user experiences.",
-      "openToWork": true,
-      "createdAt": "2026-02-04T10:00:00Z"
-    },
-    {
-      "id": "c2",
-      "userId": "1",
-      "name": "Jane Smith",
-      "email": "jane@demo.com",
-      "phone": "+0987654321",
-      "location": "San Francisco",
-      "experience": "3 years",
-      "skills": ["Python", "Django", "PostgreSQL"],
-      "bio": "Backend developer with expertise in scalable systems.",
-      "openToWork": false,
-      "createdAt": "2026-02-04T11:00:00Z"
-    }
-  ],
-  "companies": [
-    {
-      "id": "comp1",
-      "userId": "1",
-      "name": "Tech Corp",
-      "email": "hr@techcorp.com",
-      "phone": "+1112223333",
-      "location": "Silicon Valley",
-      "industry": "Technology",
-      "size": "100-500",
-      "description": "Leading technology company focused on innovation.",
-      "website": "https://techcorp.com",
-      "createdAt": "2026-02-04T09:00:00Z"
-    },
-    {
-      "id": "comp2",
-      "userId": "2",
-      "name": "StartupXYZ",
-      "email": "jobs@startupxyz.com",
-      "phone": "+4445556666",
-      "location": "Austin",
-      "industry": "Software",
-      "size": "10-50",
-      "description": "Fast-growing startup building the future of work.",
-      "website": "https://startupxyz.com",
-      "createdAt": "2026-02-04T12:00:00Z"
-    }
-  ],
-  "matches": [
-    {
-      "id": "m1",
-      "companyId": "comp1",
-      "candidateId": "c1",
-      "offerId": "f813",
-      "status": "pending",
-      "createdAt": "2026-02-04T13:00:00Z",
-      "updatedAt": "2026-02-04T13:00:00Z"
-    },
-    {
-      "id": "m2",
-      "companyId": "comp2",
-      "candidateId": "c1",
-      "offerId": "f813",
-      "status": "contacted",
-      "createdAt": "2026-02-04T14:00:00Z",
-      "updatedAt": "2026-02-04T15:00:00Z"
-    }
-  ],
-  "reservations": [
-    {
-      "id": "r1",
-      "companyId": "comp1",
-      "candidateId": "c1",
-      "offerId": "f813",
-      "status": "active",
-      "createdAt": "2026-02-04T16:00:00Z",
-      "expiresAt": "2026-02-11T16:00:00Z"
-    }
-  ]
-}
+//
+const jobs = [
+  {
+    id: 1,
+    title: "Desarrollador Web",
+    company: "Tech Solutions",
+    category: "Tecnología",
+    location: "Remoto",
+    type: "Tiempo Completo"
+  },
+  {
+    id: 2,
+    title: "Especialista en Marketing",
+    company: "Creativa Agency",
+    category: "Marketing",
+    location: "Presencial",
+    type: "Medio Tiempo"
+  },
+  {
+    id: 3,
+    title: "Analista de Negocios",
+    company: "Business Corp",
+    category: "Negocios",
+    location: "Remoto",
+    type: "Tiempo Completo"
+  }
+];
+
+fetch("http://localhost:3000/jobs") 
+//
+
