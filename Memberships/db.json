@@ -1,0 +1,42 @@
+{
+  "user": {
+    "id": 1,
+    "name": "Alex Candidate",
+    "email": "alex@matchflow.com",
+    "planId": 2,
+    "applicationsUsed": 10
+  },
+  "plans": [
+    {
+      "id": 1,
+      "name": "Free",
+      "price": 0,
+      "applicationsLimit": 3,
+      "features": [
+        "Basic profile",
+        "Limited visibility"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Pro Level 1",
+      "price": 19,
+      "applicationsLimit": 10,
+      "features": [
+        "Featured profile",
+        "Visibility statistics"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Pro Level 2",
+      "price": 49,
+      "applicationsLimit": -1,
+      "features": [
+        "Unlimited applications",
+        "24/7 support",
+        "Access exclusive job listings"
+      ]
+    }
+  ]
+}
