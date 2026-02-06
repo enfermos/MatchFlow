@@ -1,0 +1,27 @@
+{
+  "company": {
+    "id": 1,
+    "name": "CRUDZASO Tech",
+    "specialization": "Development",
+    "email": "Offers@crud.com",
+    "description": "Leaders in software design and development for implementation systems for the education of new talents."
+  },
+  "offers": [
+    {
+      "id": "1",
+      "title": "Frontend Developer",
+      "salary": "$3000",
+      "description": "Build and design web applications",
+      "requerements": "React, JS, HTML, CSS",
+      "companyId": 1
+    },
+    {
+      "id": "2",
+      "title": "Backend Developer",
+      "salary": "$3500",
+      "description": "Develop and maintain server-side logic",
+      "requerements": "Node, Express, SQL",
+      "companyId": 1
+    }
+  ]
+}

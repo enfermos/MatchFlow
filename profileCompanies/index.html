@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        <title>Document</title>
+    </head>
+    <body>
+        <header class="container">
+                <nav class="navbar p-3 mb-5">
+                    <div class="container-fluid">
+                        <a href="#" class="navbar-brand">Name Company</a>
+                        <form class="d-flex" role="search">
+                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+                            <button class="btn btn-outline-primary" type="submit">Search</button>
+                        </form>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Options</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Home</a></li>
+                                <li><a class="dropdown-item" href="#">Edit profile</a></li>
+                                <li><a class="dropdown-item" href="#">Log out</a></li>
+                            </ul>
+                        </li>
+                    </div>
+                </nav>
+        </header>
+        <main class="container-fluid">
+            <div class="row">
+                <section class="col-2">
+                    <div>
+                        <h4 id="company-name"></h4>
+                        <h5 id="company-specialization"></h5>
+                        <p id="company-email"></p>
+                        <p id="company-description"></p>
+                        <p id="offer-count"></p>
+                    </div>
+                </section>
+                <section class="col-6">
+                    <div class="container-fluid">
+                        <h3>Job offers</h3>
+                        <div class="row row-cols-1 row-cols-md-3 g-4">
+                                <div class="card w-100">
+                                    <div class="card-body">
+                                        <div id="offers-container" class="row g-3">
+                                        </div>
+                                    </div>
+                                </div> 
+                        </div>
+                    </div>
+                </section>
+                <section class="col-2">
+                    <div class="container-fluid">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title" id="offer-title"></h5>
+                                <p id="offer-salary"></p>
+                                <p id="offer-description"></p>
+                                <button id="edit-offer-btn" class="btn btn-primary container">Edit</button>
+                        </div>
+                    </div>
+                </section>
+                <section class="col-2">
+                    <div class="container-fluid">
+                        <div class="card">
+                            <div class="card-body" id="offer-form-container">
+                                <button id="create-offer-btn" class="btn btn-primary w-100">Create Offer</button>
+                                <form id="offer-form" class="d-none mt-3">
+                                    <div class="mb-2">
+                                        <label class="form-label">Title</label>
+                                        <input type="text" class="form-control" id="offer-title-input" required>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">Salary</label>
+                                        <input type="text" class="form-control" id="offer-salary-input" required>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">Description</label>
+                                        <textarea class="form-control" id="offer-description-input" rows="3" required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100">Save Offer</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script type="module" src="scripts.js"></script>
+    </body>
+</html>
