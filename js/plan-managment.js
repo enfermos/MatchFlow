@@ -1,25 +1,94 @@
 import { getData } from "./api.js";
 
 const $ = (s) => document.querySelector(s);
+const userHtml = (id, name, plan, planColor, status, statusColor) => {
+  return `
+  <tr class="border-t">
+      <td class="p-3">${id}</td>
+      <td class="p-3">${name}</td>
+      <td class="p-3">
+          <span
+              class="px-2 py-1 rounded ${planColor}"
+              >${plan}</span
+          >
+      </td>
+      <td class="p-3 ${statusColor}">${status}</td>
+      <td class="p-3 text-blue-600 cursor-pointer">
+          EDITAR
+      </td>
+  </tr>
+  `;
+};
+const adminHtml = (id, name, plan, planColor, status, statusColor) => {
+  return `
+  <tr class="border-t">
+      <td class="p-3">${id}</td>
+      <td class="p-3">${name}</td>
+      <td class="p-3">
+          <span
+              class="px-2 py-1 ${planColor} rounded"
+              >${plan}</span
+          >
+      </td>
+      <td class="p-3 ${statusColor}">${status}</td>
+      <td class="p-3 text-blue-600">EDITAR</td>
+  </tr>
+  `;
+};
 
 (async function renderHTML() {
   const users = await getData("/users");
   const totalUsers = users.length;
   let planStatusCounter = 0;
   let earning = 0;
+  let usertableHtml = "";
+  let admintableHtml = "";
 
   users.forEach((user) => {
-    if (user.planActive) {
+    let statusColor = "text-red-600";
+
+    if (user.planStatus === "Activo") {
       planStatusCounter += 1;
+      statusColor = "text-green-600";
+      if (user.plan === "Pro") {
+        earning += 19.99;
+      } else if (user.plan === "Premium") {
+        earning += 29.99;
+      }
     }
-    if (user.plan === "Pro") {
-      earning += 19.99;
-    } else if (user.plan === "Premium") {
-      earning += 29.99;
+
+    if (user.role === "user") {
+      usertableHtml += userHtml(
+        user.id,
+        user.name,
+        user.plan,
+        user.plan === "Pro"
+          ? "text-blue-600 bg-blue-100"
+          : user.plan === "Premium"
+            ? "text-purple-600 bg-purple-100"
+            : "text-gray-600 bg-gray-100",
+        user.planStatus,
+        statusColor,
+      );
+    } else {
+      admintableHtml = adminHtml(
+        user.id,
+        user.name,
+        user.plan,
+        user.plan === "Pro"
+          ? "text-blue-600 bg-blue-100"
+          : user.plan === "Premium"
+            ? "text-purple-600 bg-purple-100"
+            : "text-gray-600 bg-gray-100",
+        user.planStatus,
+        statusColor,
+      );
     }
   });
 
   $("#earning").textContent = "$" + earning;
   $("#active-plans").textContent = planStatusCounter;
   $("#total-users").textContent = totalUsers;
+  $("#user-tbody").innerHTML = usertableHtml;
+  $("#admin-tbody").innerHTML = admintableHtml;
 })();

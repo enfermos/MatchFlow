@@ -6,7 +6,7 @@
       "email": "admin@demo.com",
       "password": "123456",
       "role": "admin",
-      "planActive": true,
+      "planStatus": "Activo",
       "plan": "Free"
     },
     {
@@ -15,16 +15,16 @@
       "email": "user@demo.com",
       "password": "123456",
       "role": "user",
-      "planActive": false,
+      "planStatus": "Activo",
       "plan": "Pro"
     },
     {
       "id": "a2ff",
-      "fullName": "este parcero",
+      "name": "este parcero",
       "email": "parcerito@gmail.com",
       "password": "123456",
       "role": "user",
-      "planActive": true,
+      "planStatus": "Inactivo",
       "plan": "Premium"
     },
     {
@@ -33,7 +33,7 @@
       "email": "pepito@hotmail.com",
       "password": "123",
       "role": "user",
-      "planActive": false,
+      "planStatus": "Inactivo",
       "plan": "Pro"
     }
   ],

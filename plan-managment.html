@@ -75,19 +75,15 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="bg-white p-6 rounded-xl shadow-sm">
                         <p class="text-slate-500">Total Usuarios</p>
-                        <h2 class="text-2xl font-bold" id="total-users">
-                            24,560
-                        </h2>
+                        <h2 class="text-2xl font-bold" id="total-users"></h2>
                     </div>
                     <div class="bg-white p-6 rounded-xl shadow-sm">
                         <p class="text-slate-500">Planes Activos</p>
-                        <h2 class="text-2xl font-bold" id="active-plans">
-                            1,892
-                        </h2>
+                        <h2 class="text-2xl font-bold" id="active-plans"></h2>
                     </div>
                     <div class="bg-white p-6 rounded-xl shadow-sm">
                         <p class="text-slate-500">Ingresos Mensuales</p>
-                        <h2 class="text-2xl font-bold" id="earning">$45,200</h2>
+                        <h2 class="text-2xl font-bold" id="earning"></h2>
                     </div>
                 </div>
 
@@ -108,49 +104,7 @@
                                 <th class="p-3 text-left">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr class="border-t">
-                                <td class="p-3">#C-1024</td>
-                                <td class="p-3">Alex Rivera</td>
-                                <td class="p-3">
-                                    <span
-                                        class="px-2 py-1 bg-purple-100 text-purple-600 rounded"
-                                        >Premium</span
-                                    >
-                                </td>
-                                <td class="p-3 text-green-600">Activo</td>
-                                <td class="p-3 text-blue-600 cursor-pointer">
-                                    EDITAR
-                                </td>
-                            </tr>
-                            <tr class="border-t">
-                                <td class="p-3">#C-1025</td>
-                                <td class="p-3">Maria Chen</td>
-                                <td class="p-3">
-                                    <span class="px-2 py-1 bg-slate-100 rounded"
-                                        >Básico</span
-                                    >
-                                </td>
-                                <td class="p-3 text-yellow-600">Pendiente</td>
-                                <td class="p-3 text-blue-600 cursor-pointer">
-                                    EDITAR
-                                </td>
-                            </tr>
-                            <tr class="border-t">
-                                <td class="p-3">#C-1026</td>
-                                <td class="p-3">Jordan Smith</td>
-                                <td class="p-3">
-                                    <span
-                                        class="px-2 py-1 bg-blue-100 text-blue-600 rounded"
-                                        >Pro</span
-                                    >
-                                </td>
-                                <td class="p-3 text-red-600">Expirado</td>
-                                <td class="p-3 text-blue-600 cursor-pointer">
-                                    EDITAR
-                                </td>
-                            </tr>
-                        </tbody>
+                        <tbody id="user-tbody"></tbody>
                     </table>
                 </div>
 
@@ -165,11 +119,11 @@
                                 <th class="p-3 text-left">ID</th>
                                 <th class="p-3 text-left">Empresa</th>
                                 <th class="p-3 text-left">Plan</th>
-                                <th class="p-3 text-left">Facturación</th>
+                                <th class="p-3 text-left">Estado</th>
                                 <th class="p-3 text-left">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="admin-tbody">
                             <tr class="border-t">
                                 <td class="p-3">#E-5001</td>
                                 <td class="p-3">TechNova Solutions</td>
