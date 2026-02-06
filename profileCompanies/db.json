@@ -8,7 +8,7 @@
   },
   "offers": [
     {
-      "id": "1",
+      "id": 1,
       "title": "Frontend Developer",
       "salary": "$3000",
       "description": "Build and design web applications",
@@ -16,7 +16,7 @@
       "companyId": 1
     },
     {
-      "id": "2",
+      "id": 2,
       "title": "Backend Developer",
       "salary": "$3500",
       "description": "Develop and maintain server-side logic",

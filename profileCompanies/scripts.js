@@ -1,4 +1,5 @@
-import {getCompany, getOffers, updateOffer} from "./json.js";
+import {getCompany, getOffers, createOffer, updateOffer} from "./json.js";
+
 
 const companyName = document.getElementById("company-name");
 const companySpec = document.getElementById("company-specialization");
@@ -30,49 +31,96 @@ const loadOffers = async () => {
     offersContainer.innerHTML = "";
 
     offers.forEach(offer => {
-        const card = document.createElement("div");
-        card.classList.add("col-12");
+    const card = document.createElement("div");
+    card.classList.add("col-12");
 
-        card.innerHTML = `
-        <div class="card">
-            <div class="card-body">
-                <h5>${offer.title}</h5>
-                <p>${offer.salary}</p>
-                <button class="btn btn-outline-primary btn-sm">View</button>
-            </div>
+    card.innerHTML = `
+        <div class="card position-relative">
+        <div class="card-body">
+
+            <button
+            class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2 delete-offer-btn" data-id="${offer.id}" title="Delete offer">
+            <i class="bi bi-trash"></i>
+            </button>
+
+            <h5>${offer.title}</h5>
+            <p>${offer.salary}</p>
+
+            <button class="btn btn-outline-primary btn-sm view-offer-btn">View</button>
         </div>
-        `;
+        </div>
+    `;
 
-        card.querySelector("button").addEventListener("click", () => {
+    /* VIEW */
+    card.querySelector(".view-offer-btn").addEventListener("click", () => {
         showOfferDetail(offer);
     });
 
-    offersContainer.appendChild(card);
+    /* DELETE */
+    card.querySelector(".delete-offer-btn").addEventListener("click", async () => {
+        const confirmDelete = confirm("¿Eliminar esta oferta?");
+        if (!confirmDelete) return;
+
+        await deleteOffer(offer.id);
     });
+
+    offersContainer.appendChild(card);
+});
 };
 
 /* Watch description */
 const showOfferDetail = (offer) => {
     selectedOffer = offer;
+
     offerTitle.textContent = offer.title;
     offerSalary.textContent = offer.salary;
     offerDescription.textContent = offer.description;
+
+        editOfferBtn.disabled = false;
+    editOfferForm.classList.add("d-none");
 };
 
-/* Editar oferta (ejemplo simple) */
-document.getElementById("edit-offer-btn").addEventListener("click", async () => {
+
+
+/* Edit offer */
+const editOfferBtn = document.getElementById("edit-offer-btn");
+const editOfferForm = document.getElementById("edit-offer-form");
+
+const editTitleInput = document.getElementById("edit-title-input");
+const editSalaryInput = document.getElementById("edit-salary-input");
+const editDescriptionInput = document.getElementById("edit-description-input");
+
+editOfferBtn.addEventListener("click", () => {
     if (!selectedOffer) return;
 
-    const newTitle = prompt("New title:", selectedOffer.title);
-    if (!newTitle) return;
+    editTitleInput.value = selectedOffer.title;
+    editSalaryInput.value = selectedOffer.salary;
+    editDescriptionInput.value = selectedOffer.description;
 
-    await updateOffer(selectedOffer.id, {
-    ...selectedOffer,
-    title: newTitle
-    });
-
-    loadOffers();
+    editOfferForm.classList.toggle("d-none");
 });
+
+editOfferForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!selectedOffer) return;
+
+    const updatedOffer = {
+        ...selectedOffer,
+        title: editTitleInput.value,
+        salary: editSalaryInput.value,
+        description: editDescriptionInput.value
+    };
+
+    await updateOffer(selectedOffer.id, updatedOffer);
+
+    selectedOffer = updatedOffer;
+
+    showOfferDetail(updatedOffer);
+    loadOffers();
+
+    editOfferForm.classList.add("d-none");
+});
+
 
 loadCompany();
 loadOffers();
@@ -107,3 +155,20 @@ offerForm.addEventListener("submit", async (e) => {
 
     loadOffers();
 });
+
+/* Delete offer */
+const deleteOffer = async (id) => {
+    await fetch(`http://localhost:3000/offers/${id}`, {
+        method: "DELETE",
+    });
+
+    if (selectedOffer && selectedOffer.id === id) {
+        selectedOffer = null;
+        offerTitle.textContent = "";
+        offerSalary.textContent = "";
+        offerDescription.textContent = "";
+        editOfferBtn.disabled = true;
+    }
+
+    loadOffers();
+};
