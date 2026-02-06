@@ -9,6 +9,13 @@
     },
     {
       "id": "2",
+      "name": "Company",
+      "email": "company@demo.com",
+      "password": "123456",
+      "role": "company"
+    },
+    {
+      "id": "3",
       "name": "User",
       "email": "user@demo.com",
       "password": "123456",
