@@ -1,0 +1,141 @@
+    <!doctype html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MatchFlow | Dashboard Empresa</title>
+    <link rel="stylesheet" href="./css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap"
+    rel="stylesheet"
+    />
+</head>
+<body>
+    <div class="dashboard">
+    <aside class="sidebar">
+        <div>
+        <h2>MatchFlow</h2>
+        <p>Panel Empresa</p>
+        </div>
+        <div class="user-box" id="user-box"></div>
+        <nav class="nav" id="nav-links">
+            <a href="#" data-section="candidates" class="active">Candidatos</a>
+            <a href="#" data-section="offers">Mis Ofertas</a>
+            <a href="#" data-section="matches">Match</a>
+            <a href="profile_user.html">Mi Perfil</a>
+        </nav>
+        <button class="btn btn-ghost" id="logout-btn">Cerrar sesión</button>
+    </aside>
+
+    <main class="main">
+        <section class="topbar">
+        <h3 id="section-title">Candidatos</h3>
+        </section>
+
+        <!-- SECCIÓN: CANDIDATOS -->
+        <section class="section" id="section-candidates">
+        <div class="card">
+            <h4>Lista de Candidatos</h4>
+            <table class="table" id="candidates-table">
+            <thead>
+                <tr>
+                <th>Nombre</th>
+                <th>Username</th>
+                <th>Correo</th>
+                <th>Profesión</th>
+                <th>Disponibilidad</th>
+                <th>Proceso</th>
+                <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            </table>
+            <div id="candidates-empty" style="display: none;">
+            <p>No hay candidatos disponibles</p>
+            </div>
+        </div>
+        </section>
+
+        <!-- SECCIÓN: MIS OFERTAS -->
+        <section class="section" id="section-offers" style="display: none;">
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h4>Mis Ofertas</h4>
+            <button class="btn btn-primary" id="create-offer-btn">Crear Nueva Oferta</button>
+            </div>
+            <div class="grid" id="offers-grid"></div>
+            <div id="offers-empty" style="display: none;">
+            <p>No tienes ofertas creadas</p>
+            </div>
+        </div>
+
+        <!-- FORMULARIO CREAR/EDITAR OFERTA -->
+        <div class="card" id="offer-form-container" style="display: none; margin-top: 1rem;">
+            <h4 id="offer-form-title">Crear oferta</h4>
+            <form class="form" id="offer-form">
+            <div class="form-grid">
+                <div>
+                <label for="title">Cargo</label>
+                <input class="input" id="title" required />
+                </div>
+                <div>
+                <label for="company">Empresa</label>
+                <input class="input" id="company" required />
+                </div>
+                <div>
+                <label for="location">Ubicación</label>
+                <input class="input" id="location" required />
+                </div>
+                <div>
+                <label for="category">Categoría</label>
+                <input class="input" id="category" required />
+                </div>
+                <div>
+                <label for="type">Modalidad</label>
+                <input class="input" id="type" required />
+                </div>
+                <div>
+                <label for="salary">Salario</label>
+                <input class="input" id="salary" required />
+                </div>
+            </div>
+            <div>
+                <label for="description">Descripción</label>
+                <textarea class="input" id="description" rows="4" required></textarea>
+            </div>
+            <div class="actions">
+                <button class="btn btn-primary" type="submit">Guardar oferta</button>
+                <button class="btn btn-ghost" type="button" id="cancel-offer-btn">Cancelar</button>
+            </div>
+            </form>
+        </div>
+        </section>
+
+        <!-- SECCIÓN: MATCH -->
+        <section class="section" id="section-matches" style="display: none;">
+        <div class="card">
+            <h4>Match Usuario-Oferta</h4>
+            <table class="table" id="matches-table">
+            <thead>
+                <tr>
+                <th>Usuario</th>
+                <th>Correo</th>
+                <th>Oferta</th>
+                <th>Estado Match</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            </table>
+            <div id="matches-empty" style="display: none;">
+            <p>No hay matches registrados</p>
+            </div>
+        </div>
+        </section>
+    </main>
+    </div>
+
+    <script type="module" src="./js/dashboard-company.js"></script>
