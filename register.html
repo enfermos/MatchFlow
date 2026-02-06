@@ -121,7 +121,7 @@
                 />
               </div>
 
-              <div class="form-field">
+<div class="form-field">
                 <label for="password" class="field-label"
                   >Contraseña (mínimo 8 caracteres)</label
                 >
@@ -132,6 +132,15 @@
                   placeholder="Contraseña (mínimo 8 caracteres)"
                   required
                 />
+              </div>
+
+              <div class="form-field">
+                <label for="role" class="field-label">Tipo de cuenta</label>
+                <select class="field-input" id="role" required>
+                  <option value="">Selecciona tu rol</option>
+                  <option value="candidate">Candidato - Busco empleo</option>
+                  <option value="company">Empresa - Busco talento</option>
+                </select>
               </div>
 
               <button class="btn-submit" type="submit">Registrar</button>

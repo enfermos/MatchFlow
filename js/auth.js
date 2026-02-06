@@ -59,11 +59,12 @@ if (registerForm) {
     const alertBox = document.querySelector("#register-alert");
     alertBox.innerHTML = "";
 
-    const name = document.querySelector("#name").value.trim();
+const name = document.querySelector("#name").value.trim();
     const email = document.querySelector("#email").value.trim().toLowerCase();
     const password = document.querySelector("#password").value.trim();
+    const role = document.querySelector("#role").value.trim();
 
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !role) {
       showAlert(alertBox, "Completa todos los campos");
       return;
     }
@@ -75,11 +76,11 @@ if (registerForm) {
       return;
     }
 
-    await postData("/users", {
+await postData("/users", {
       name,
       email,
       password,
-      role: "candidate",
+      role,
     });
 
     clearSession();

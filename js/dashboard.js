@@ -50,7 +50,7 @@ if (session.role === "admin") {
     <a href="#" data-section="section-applied">Mis postulaciones</a>
   `;
 } else if (session.role === "company") {
-  navLinks.innerHTML = `
+  navLinks.innerHTML = `  
     <a href="#" data-section="section-company-dashboard">Dashboard</a>
     <a href="#" data-section="section-company-offers">Mis ofertas</a>
     <a href="#" data-section="section-company-form">Crear oferta</a>
